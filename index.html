@@ -1,404 +1,1118 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <base target="_top">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
-    <style>
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<html lang="en">
 
-      :root {
-        --olive:     #5B5512;
-        --peach:     #FEE1A7;
-        --fawn:      #D8B577;
-        --pink:      #CE84AD;
-        --red:       #8D0100;
-        --graphite:  #363636;
-        --white:     #FFFFFF;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Matsuri — Volunteer</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@300;500;700&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      /* Corporate */
+      --dark-gray: #414042;
+      --light-gray: #808285;
+      /* Organization */
+      --olive: #5B5512;
+      --peach: #FFE1A7;
+      --fawn: #D8B577;
+      --pink: #CE84AD;
+      --blood-red: #8D0100;
+      --white: #FFFFFF;
+      --graphite: #363636;
+      /* Derived */
+      --bg: #3D4026;
+      --bg-deep: #2B2D18;
+      --text: #FFFDF7;
+      --text-muted: rgba(255, 253, 247, 0.7);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ═══════════════════════════════════════════
+       NAVIGATION
+    ═══════════════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      background: rgba(43, 45, 24, 0.6);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    nav.scrolled {
+      padding: 14px 40px;
+      background: rgba(43, 45, 24, 0.94);
+    }
+
+    .nav-logo {
+      font-family: 'Lexend', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-transform: lowercase;
+    }
+
+    .nav-logo .sub {
+      font-weight: 300;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0.4;
+      margin-left: 4px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-cta {
+      background: var(--fawn) !important;
+      color: var(--bg-deep) !important;
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-weight: 600 !important;
+      letter-spacing: 0.3px;
+      transition: transform 0.2s, box-shadow 0.3s !important;
+    }
+
+    .nav-cta:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(216, 181, 119, 0.3) !important;
+    }
+
+    /* ═══════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.3;
+      filter: saturate(0.6) contrast(1.1);
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg,
+          rgba(43, 45, 24, 0.4) 0%,
+          rgba(43, 45, 24, 0.1) 35%,
+          rgba(43, 45, 24, 0.8) 80%,
+          var(--bg-deep) 100%),
+        radial-gradient(ellipse at 20% 50%, rgba(216, 181, 119, 0.1) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 30%, rgba(255, 225, 167, 0.1) 0%, transparent 50%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 24px;
+      max-width: 900px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(245, 242, 236, 0.6);
+      margin-bottom: 32px;
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+
+    .hero-tag .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--peach);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    .hero-title {
+      font-family: 'Lexend', sans-serif;
+      font-size: clamp(52px, 10vw, 130px);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -3px;
+      color: var(--text);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+    }
+
+    .hero-title .accent {
+      background: linear-gradient(135deg, var(--peach), var(--fawn));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(15px, 2vw, 20px);
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.65;
+      max-width: 540px;
+      margin: 0 auto 40px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.7s forwards;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.9s forwards;
+    }
+
+    .btn-hero {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      border: none;
+    }
+
+    .btn-hero.primary {
+      background: var(--fawn);
+      color: var(--bg-deep);
+      box-shadow: 0 4px 20px rgba(216, 181, 119, 0.3);
+    }
+
+    .btn-hero.primary:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 8px 30px rgba(216, 181, 119, 0.4);
+    }
+
+    .btn-hero.secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-hero.secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-3px);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeUp 0.8s 1.2s forwards;
+    }
+
+    .scroll-indicator span {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(245, 242, 236, 0.25);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(180deg, rgba(245, 242, 236, 0.25), transparent);
+      animation: scrollBounce 2s infinite;
+    }
+
+    /* ═══════════════════════════════════════════
+       MARQUEE
+    ═══════════════════════════════════════════ */
+    .marquee-section {
+      padding: 20px 0;
+      overflow: hidden;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.015);
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+
+    .marquee-item {
+      flex-shrink: 0;
+      padding: 0 48px;
+      font-family: 'Lexend', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: rgba(245, 242, 236, 0.1);
+      white-space: nowrap;
+    }
+
+    .marquee-item .sep {
+      color: var(--fawn);
+      opacity: 0.35;
+      margin-left: 48px;
+    }
+
+    /* ═══════════════════════════════════════════
+       PHOTO GRID
+    ═══════════════════════════════════════════ */
+    .photo-section {
+      padding: 100px 40px;
+      position: relative;
+    }
+
+    .section-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--fawn);
+      margin-bottom: 16px;
+    }
+
+    .photo-section h2 {
+      font-family: 'Lexend', sans-serif;
+      font-size: clamp(36px, 5.5vw, 64px);
+      font-weight: 800;
+      line-height: 1.05;
+      margin-bottom: 56px;
+      max-width: 700px;
+      letter-spacing: -1.5px;
+    }
+
+    .photo-section h2 .thin {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 0.3em;
+      display: block;
+      color: var(--text-muted);
+      margin-top: 10px;
+      letter-spacing: 0;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto;
+      gap: 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .photo-card {
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .photo-card:hover {
+      transform: scale(1.02);
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .photo-card:hover img {
+      transform: scale(1.08);
+    }
+
+    .photo-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(43, 45, 24, 0.85) 100%);
+      pointer-events: none;
+    }
+
+    .photo-card .card-label {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      z-index: 2;
+      font-family: 'Lexend', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .photo-card .card-sub {
+      position: absolute;
+      bottom: 6px;
+      left: 20px;
+      z-index: 2;
+      font-size: 11px;
+      font-weight: 300;
+      color: rgba(245, 242, 236, 0.55);
+    }
+
+    .pc-1 {
+      grid-column: 1 / 8;
+      grid-row: 1;
+      aspect-ratio: 16/10;
+    }
+
+    .pc-2 {
+      grid-column: 8 / 13;
+      grid-row: 1;
+      aspect-ratio: 4/5;
+    }
+
+    .pc-3 {
+      grid-column: 1 / 13;
+      grid-row: 2;
+      aspect-ratio: 21/9;
+    }
+
+    /* ═══════════════════════════════════════════
+       STEPS
+    ═══════════════════════════════════════════ */
+    .steps-section {
+      padding: 100px 40px 120px;
+      position: relative;
+      background:
+        radial-gradient(ellipse at 0% 50%, rgba(216, 181, 119, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 0%, rgba(255, 225, 167, 0.05) 0%, transparent 50%);
+    }
+
+    .steps-header {
+      text-align: center;
+      margin-bottom: 72px;
+    }
+
+    .steps-header h2 {
+      font-family: 'Lexend', sans-serif;
+      font-size: clamp(36px, 5.5vw, 64px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -1.5px;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .step-card {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 24px;
+      padding: 40px 36px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .step-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .step-card .big-num {
+      font-family: 'Lexend', sans-serif;
+      font-size: 120px;
+      font-weight: 900;
+      line-height: 1;
+      position: absolute;
+      top: -10px;
+      right: 20px;
+      color: rgba(255, 255, 255, 0.025);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .step-card .step-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .step-card:nth-child(1) .step-icon {
+      background: rgba(216, 181, 119, 0.15);
+    }
+
+    .step-card:nth-child(2) .step-icon {
+      background: rgba(255, 225, 167, 0.15);
+    }
+
+    .step-card h3 {
+      font-family: 'Lexend', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .step-card p {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .step-card p strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .step-card .step-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .step-card:nth-child(1) .step-btn {
+      background: var(--fawn);
+      color: var(--bg-deep);
+      box-shadow: 0 4px 15px rgba(216, 181, 119, 0.25);
+    }
+
+    .step-card:nth-child(1) .step-btn:hover {
+      box-shadow: 0 6px 20px rgba(216, 181, 119, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .step-card:nth-child(2) .step-btn {
+      background: var(--peach);
+      color: var(--bg-deep);
+      box-shadow: 0 4px 15px rgba(255, 225, 167, 0.25);
+    }
+
+    .step-card:nth-child(2) .step-btn:hover {
+      box-shadow: 0 6px 20px rgba(255, 225, 167, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* ═══════════════════════════════════════════
+       CONTACT
+    ═══════════════════════════════════════════ */
+    .contact-section {
+      padding: 80px 40px 100px;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .contact-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .contact-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .contact-header h2 {
+      font-family: 'Lexend', sans-serif;
+      font-size: clamp(28px, 4.5vw, 48px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -1px;
+    }
+
+    .contact-socials {
+      display: flex;
+      gap: 12px;
+    }
+
+    .contact-socials a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      transition: all 0.3s;
+    }
+
+    .contact-socials a:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .coord-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .coord-card {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 24px;
+      transition: all 0.3s;
+    }
+
+    .coord-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .coord-card .name {
+      font-family: 'Lexend', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .coord-card .links {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .coord-card .link-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    a.link-row:hover {
+      color: var(--text);
+    }
+
+    .link-row .platform-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--pink);
+      min-width: 32px;
+      text-align: center;
+    }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════ */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 40px;
+      text-align: center;
+    }
+
+    footer .footer-logo {
+      font-family: 'Lexend', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: rgba(245, 242, 236, 0.12);
+      margin-bottom: 6px;
+      text-transform: lowercase;
+    }
+
+    footer p {
+      font-size: 12px;
+      font-weight: 300;
+      color: rgba(245, 242, 236, 0.18);
+    }
+
+    /* ═══════════════════════════════════════════
+       ANIMATIONS
+    ═══════════════════════════════════════════ */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
       }
 
-      body {
-        font-family: 'Lexend', sans-serif;
-        background-color: var(--peach);
-        background-image:
-          radial-gradient(ellipse at 10% 0%, rgba(206,132,173,0.18) 0%, transparent 55%),
-          radial-gradient(ellipse at 90% 100%, rgba(91,85,18,0.13) 0%, transparent 55%);
-        min-height: 100vh;
-        color: var(--graphite);
-        padding: 32px 16px 56px;
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
       }
 
-      /* ─── decorative top bar ─── */
-      .topbar {
-        width: 100%;
-        max-width: 720px;
-        margin: 0 auto 28px;
-        display: flex;
-        align-items: center;
-        gap: 14px;
+      50% {
+        opacity: 0.3;
       }
-      .topbar-line { flex: 1; height: 2px; background: var(--olive); opacity: .35; }
-      .topbar-icon {
-        font-size: 22px;
-        letter-spacing: 4px;
-        color: var(--olive);
-        font-family: 'Noto Serif JP', serif;
-        font-weight: 300;
+    }
+
+    @keyframes scrollBounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+        opacity: 0.5;
       }
 
-      /* ─── card ─── */
-      .card {
-        max-width: 720px;
-        margin: 0 auto;
-        background: var(--white);
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 8px 40px rgba(91,85,18,0.13), 0 2px 8px rgba(0,0,0,0.06);
+      50% {
+        transform: translateY(10px);
+        opacity: 1;
+      }
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(0);
       }
 
-      /* header banner */
-      .card-header {
-        background: linear-gradient(135deg, var(--olive) 0%, #7a7218 100%);
-        padding: 32px 36px 28px;
-        position: relative;
-        overflow: hidden;
+      100% {
+        transform: translateX(-50%);
       }
-      .card-header::after {
-        content: '祭';
-        position: absolute;
-        right: 24px; top: 50%; transform: translateY(-50%);
-        font-family: 'Noto Serif JP', serif;
-        font-size: 96px;
-        color: rgba(255,255,255,0.07);
-        line-height: 1;
-        pointer-events: none;
-        user-select: none;
-      }
-      .card-header h1 {
-        font-size: 22px;
-        font-weight: 700;
-        color: var(--white);
-        line-height: 1.35;
-        max-width: 420px;
-      }
-      .card-header .subtitle {
-        margin-top: 6px;
-        font-size: 13px;
-        font-weight: 300;
-        color: rgba(255,255,255,0.7);
-        letter-spacing: .03em;
-      }
+    }
 
-      /* accent strip */
-      .accent-strip {
-        height: 5px;
-        background: linear-gradient(90deg, var(--red), var(--pink), var(--fawn));
-      }
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
 
-      /* body */
-      .card-body { padding: 28px 32px 32px; }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-      /* steps */
-      .steps-label {
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: .12em;
-        text-transform: uppercase;
-        color: var(--olive);
-        margin-bottom: 14px;
+    .stagger .reveal:nth-child(1) {
+      transition-delay: 0.05s;
+    }
+
+    .stagger .reveal:nth-child(2) {
+      transition-delay: 0.12s;
+    }
+
+    .stagger .reveal:nth-child(3) {
+      transition-delay: 0.19s;
+    }
+
+    .stagger .reveal:nth-child(4) {
+      transition-delay: 0.26s;
+    }
+
+    /* GRAIN */
+    .grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 180px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav {
+        padding: 16px 20px;
       }
 
-      .steps { display: flex; flex-direction: column; gap: 14px; }
-
-      .step {
-        display: flex;
-        gap: 16px;
-        align-items: flex-start;
-        background: #faf7f0;
-        border: 1.5px solid var(--fawn);
-        border-radius: 14px;
-        padding: 16px 18px;
-        transition: border-color .2s, box-shadow .2s;
-      }
-      .step:hover { border-color: var(--olive); box-shadow: 0 4px 16px rgba(91,85,18,0.1); }
-
-      .step-num {
-        flex-shrink: 0;
-        width: 32px; height: 32px;
-        border-radius: 50%;
-        background: var(--olive);
-        color: var(--white);
-        font-size: 14px;
-        font-weight: 700;
-        display: flex; align-items: center; justify-content: center;
+      .nav-links a:not(.nav-cta) {
+        display: none;
       }
 
-      .step-content { flex: 1; }
-      .step-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-      .step-desc { font-size: 13px; font-weight: 300; color: #555; line-height: 1.55; }
-      .step-desc strong { font-weight: 600; color: var(--graphite); }
+      .hero-content {
+        padding: 0 16px;
+      }
 
-      /* buttons */
-      .btnrow {
-        display: flex;
-        flex-wrap: wrap;
+      .photo-section {
+        padding: 60px 20px;
+      }
+
+      .photo-grid {
+        grid-template-columns: 1fr;
         gap: 12px;
-        margin-top: 24px;
       }
 
-      a.btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 13px 22px;
-        border-radius: 12px;
-        font-family: 'Lexend', sans-serif;
-        font-size: 14px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: transform .15s, box-shadow .15s, opacity .15s;
-        cursor: pointer;
-      }
-      a.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.14); }
-      a.btn:active { transform: translateY(0); }
-
-      a.btn.primary {
-        background: linear-gradient(135deg, var(--olive), #7a7218);
-        color: var(--white);
-        box-shadow: 0 3px 12px rgba(91,85,18,0.3);
-      }
-      a.btn.secondary {
-        background: var(--white);
-        color: var(--olive);
-        border: 2px solid var(--olive);
+      .pc-1,
+      .pc-2,
+      .pc-3 {
+        grid-column: 1;
+        grid-row: auto;
+        aspect-ratio: 16/10;
       }
 
-      .btn-icon { font-size: 16px; }
-
-      /* divider */
-      .divider {
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--fawn), transparent);
-        margin: 28px 0;
+      .steps-section {
+        padding: 60px 20px 80px;
       }
 
-      /* help section */
-      .help-label {
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: .12em;
-        text-transform: uppercase;
-        color: var(--olive);
-        margin-bottom: 14px;
+      .steps-grid {
+        grid-template-columns: 1fr;
       }
 
-      .coordinator-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 10px;
-        margin-bottom: 18px;
+      .contact-section {
+        padding: 60px 20px 80px;
       }
 
-      .coordinator-card {
-        background: #faf7f0;
-        border: 1.5px solid var(--fawn);
-        border-radius: 12px;
-        padding: 13px 16px;
-        transition: border-color .2s;
-      }
-      .coordinator-card:hover { border-color: var(--pink); }
-
-      .coord-name { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
-      .coord-links { display: flex; flex-direction: column; gap: 3px; }
-      .coord-link {
-        font-size: 12px;
-        font-weight: 300;
-        color: #555;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        transition: color .15s;
-      }
-      .coord-link:hover { color: var(--olive); }
-      .coord-link .platform {
-        font-size: 10px;
-        font-weight: 600;
-        letter-spacing: .06em;
-        text-transform: uppercase;
-        color: var(--pink);
-        min-width: 50px;
+      .contact-header {
+        flex-direction: column;
+        align-items: flex-start;
       }
 
-      /* social row */
-      .social-row {
-        display: flex;
+      .contact-socials {
         flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 4px;
-      }
-      a.social-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 7px 14px;
-        border-radius: 999px;
-        font-size: 12px;
-        font-weight: 600;
-        text-decoration: none;
-        border: 1.5px solid var(--fawn);
-        color: var(--olive);
-        background: var(--white);
-        transition: background .2s, color .2s, border-color .2s;
-      }
-      a.social-pill:hover { background: var(--olive); color: var(--white); border-color: var(--olive); }
-
-      /* footer note */
-      .footer-note {
-        font-size: 11px;
-        font-weight: 300;
-        color: #999;
-        text-align: center;
-        margin-top: 22px;
-        max-width: 720px;
-        margin-left: auto;
-        margin-right: auto;
-        line-height: 1.6;
       }
 
-      @media (max-width: 520px) {
-        .card-header { padding: 24px 22px 20px; }
-        .card-body { padding: 22px 20px 26px; }
-        .card-header h1 { font-size: 18px; }
+      .coord-grid {
+        grid-template-columns: 1fr;
       }
-    </style>
-  </head>
-  <body>
+    }
+  </style>
+</head>
 
-    <div class="topbar">
-      <div class="topbar-line"></div>
-      <div class="topbar-icon">祭</div>
-      <div class="topbar-line"></div>
+<body>
+
+  <div class="grain"></div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a class="nav-logo" href="#">matsuri <span class="sub">at UC San Diego</span></a>
+    <div class="nav-links">
+      <a href="#photos">Gallery</a>
+      <a href="#signup">How It Works</a>
+      <a href="#contact">Contact</a>
+      <a class="nav-cta"
+        href="https://docs.google.com/forms/d/e/1FAIpQLSeYlXxHOCywFuShHHr82MYIOGtP2lRmfMA7NNZH_ujjFEP31Q/viewform"
+        target="_blank">Sign Up Now</a>
     </div>
+  </nav>
 
-    <div class="card">
-      <!-- Header -->
-      <div class="card-header">
-        <h1>Thank you for volunteering at Matsuri!</h1>
-        <div class="subtitle">Please read the instructions below before signing up for any shifts.</div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <img src="IMG_3982.JPG" alt="Matsuri group photo" />
+    </div>
+    <div class="hero-content">
+      <div class="hero-tag">
+        <span class="dot"></span>
+        Volunteer Registration Open
       </div>
-      <div class="accent-strip"></div>
+      <h1 class="hero-title">
+        Be Part of<br>Something <span class="accent">Bigger</span>
+      </h1>
+      <p class="hero-sub">
+        Join 50+ volunteers bringing Japanese culture to life at UC San Diego's biggest student-run matsuri.
+      </p>
+      <div class="hero-buttons">
+        <a class="btn-hero primary"
+          href="https://docs.google.com/forms/d/e/1FAIpQLSeYlXxHOCywFuShHHr82MYIOGtP2lRmfMA7NNZH_ujjFEP31Q/viewform"
+          target="_blank">
+          Sign Up to Volunteer →
+        </a>
+        <a class="btn-hero secondary" href="#signup">
+          See How It Works
+        </a>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
 
-      <!-- Body -->
-      <div class="card-body">
+  <!-- MARQUEE -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <span class="marquee-item">焼きそば <span class="sep">●</span></span>
+      <span class="marquee-item">GYOZA <span class="sep">●</span></span>
+      <span class="marquee-item">たこ焼き <span class="sep">●</span></span>
+      <span class="marquee-item">ONIGIRI <span class="sep">●</span></span>
+      <span class="marquee-item">抹茶 <span class="sep">●</span></span>
+      <span class="marquee-item">KARAAGE <span class="sep">●</span></span>
+      <span class="marquee-item">お好み焼き <span class="sep">●</span></span>
+      <span class="marquee-item">MOCHI <span class="sep">●</span></span>
+      <span class="marquee-item">焼きそば <span class="sep">●</span></span>
+      <span class="marquee-item">GYOZA <span class="sep">●</span></span>
+      <span class="marquee-item">たこ焼き <span class="sep">●</span></span>
+      <span class="marquee-item">ONIGIRI <span class="sep">●</span></span>
+      <span class="marquee-item">抹茶 <span class="sep">●</span></span>
+      <span class="marquee-item">KARAAGE <span class="sep">●</span></span>
+      <span class="marquee-item">お好み焼き <span class="sep">●</span></span>
+      <span class="marquee-item">MOCHI <span class="sep">●</span></span>
+    </div>
+  </div>
 
-        <div class="steps-label">How to sign up</div>
-        <div class="steps">
-
-          <div class="step">
-            <div class="step-num">1</div>
-            <div class="step-content">
-              <div class="step-title">Fill out the Sign-Up Form &amp; Waiver</div>
-              <div class="step-desc">
-                Complete this <strong>once</strong> before selecting any shifts. This registers you and adds your name to the volunteer list.
-              </div>
-            </div>
-          </div>
-
-          <div class="step">
-            <div class="step-num">2</div>
-            <div class="step-content">
-              <div class="step-title">Select your shifts in the spreadsheet</div>
-              <div class="step-desc">
-                Enter your name in the time slots you want. Your name should appear in the dropdown after completing the form.<br>
-                <strong>Please do not move or edit other people's names.</strong>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="btnrow">
-          <a class="btn primary" href="https://docs.google.com/forms/d/e/1FAIpQLSeYlXxHOCywFuShHHr82MYIOGtP2lRmfMA7NNZH_ujjFEP31Q/viewform" target="_blank">
-            <span class="btn-icon">📋</span> 1) Open Form &amp; Waiver
-          </a>
-          <a class="btn secondary" href="https://docs.google.com/spreadsheets/d/1o_lKXSXoMB6i_C5OHT2Lp0WSPOO_6LUJr4AYz9kpvzs/edit?gid=360559334#gid=360559334" target="_blank">
-            <span class="btn-icon">📅</span> 2) Open Sign-Up Sheet
-          </a>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="help-label">Need help? Contact a coordinator</div>
-
-        <div class="coordinator-grid">
-
-          <div class="coordinator-card">
-            <div class="coord-name">Nola Nishio</div>
-            <div class="coord-links">
-              <a class="coord-link" href="https://instagram.com/nola.nishio" target="_blank">
-                <span class="platform">Instagram</span> @nola.nishio
-              </a>
-              <span class="coord-link">
-                <span class="platform">Discord</span> @nola.nish
-              </span>
-            </div>
-          </div>
-
-          <div class="coordinator-card">
-            <div class="coord-name">Kane Yokoyama</div>
-            <div class="coord-links">
-              <a class="coord-link" href="https://instagram.com/kane_yokoyama" target="_blank">
-                <span class="platform">Instagram</span> @kane_yokoyama
-              </a>
-              <span class="coord-link">
-                <span class="platform">Discord</span> @kanemyokoyama
-              </span>
-            </div>
-          </div>
-
-          <div class="coordinator-card">
-            <div class="coord-name">Opal Chan</div>
-            <div class="coord-links">
-              <a class="coord-link" href="https://instagram.com/took_yourglasses" target="_blank">
-                <span class="platform">Instagram</span> @took_yourglasses
-              </a>
-              <span class="coord-link">
-                <span class="platform">Discord</span> @bobo_bbg
-              </span>
-            </div>
-          </div>
-
-          <div class="coordinator-card">
-            <div class="coord-name">Toshiyuki Joehren</div>
-            <div class="coord-links">
-              <a class="coord-link" href="https://instagram.com/tushiyuki" target="_blank">
-                <span class="platform">Instagram</span> @tushiyuki
-              </a>
-              <span class="coord-link">
-                <span class="platform">Discord</span> @gladatouille
-              </span>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="social-row">
-          <a class="social-pill" href="https://instagram.com/sdmatsuri" target="_blank">
-            📸 @sdmatsuri
-          </a>
-          <a class="social-pill" href="mailto:food@sdmatsuri.org">
-            ✉️ food@sdmatsuri.org
-          </a>
-        </div>
-
-      </div><!-- /card-body -->
-    </div><!-- /card -->
-
-    <div class="footer-note">
-      This page is the mobile-friendly volunteer portal for Matsuri at UC San Diego.<br>
-      It is intentionally separate from the spreadsheet so it works consistently in the Sheets mobile app.
+  <!-- PHOTO GALLERY -->
+  <section class="photo-section" id="photos">
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <div class="reveal">
+        <div class="section-label">Last Year's Matsuri</div>
+        <h2>This Is What<br>You're Joining <span class="thin">Real people. Real food. Real energy.</span></h2>
+      </div>
     </div>
 
-  </body>
+    <div class="photo-grid stagger">
+      <div class="photo-card pc-1 reveal">
+        <img src="IMG_3607.JPG" alt="Volunteers cooking gyoza" />
+        <div class="card-label">Gyoza Station</div>
+        <div class="card-sub">Hands-on cooking, all night long</div>
+      </div>
+      <div class="photo-card pc-2 reveal">
+        <img src="IMG_3806.JPG" alt="Night shift volunteers" />
+        <div class="card-label">Night Crew</div>
+        <div class="card-sub">String lights & teamwork</div>
+      </div>
+      <div class="photo-card pc-3 reveal">
+        <img src="IMG_3982.JPG" alt="Full team group photo" />
+        <div class="card-label">The Whole Squad</div>
+        <div class="card-sub">50+ volunteers, one unforgettable night</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEPS -->
+  <section class="steps-section" id="signup">
+    <div class="steps-header reveal">
+      <div class="section-label">Two Steps. That's It.</div>
+      <h2>How to Sign Up</h2>
+    </div>
+
+    <div class="steps-grid stagger">
+      <div class="step-card reveal">
+        <div class="big-num">01</div>
+        <div class="step-icon">📋</div>
+        <h3>Fill Out the Form & Waiver</h3>
+        <p>Complete this <strong>once</strong> before selecting any shifts. This registers you as a volunteer and adds
+          your name to the system.</p>
+        <a class="step-btn"
+          href="https://docs.google.com/forms/d/e/1FAIpQLSeYlXxHOCywFuShHHr82MYIOGtP2lRmfMA7NNZH_ujjFEP31Q/viewform"
+          target="_blank">
+          Open Form →
+        </a>
+      </div>
+
+      <div class="step-card reveal">
+        <div class="big-num">02</div>
+        <div class="step-icon">📅</div>
+        <h3>Pick Your Shifts</h3>
+        <p>Enter your name in the time slots you want. Your name appears in the dropdown after completing the form.
+          <strong>Please don't move or edit other people's names.</strong></p>
+        <a class="step-btn"
+          href="https://docs.google.com/spreadsheets/d/1o_lKXSXoMB6i_C5OHT2Lp0WSPOO_6LUJr4AYz9kpvzs/edit?gid=360559334#gid=360559334"
+          target="_blank">
+          Open Spreadsheet →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <div class="contact-inner">
+      <div class="contact-header reveal">
+        <div>
+          <div class="section-label">Need Help?</div>
+          <h2>Talk to Us</h2>
+        </div>
+        <div class="contact-socials">
+          <a href="https://instagram.com/sdmatsuri" target="_blank">📸 @sdmatsuri</a>
+          <a href="mailto:food@sdmatsuri.org">✉️ food@sdmatsuri.org</a>
+        </div>
+      </div>
+
+      <div class="coord-grid stagger">
+        <div class="coord-card reveal">
+          <div class="name">Nola Nishio</div>
+          <div class="links">
+            <a class="link-row" href="https://instagram.com/nola.nishio" target="_blank">
+              <span class="platform-tag">IG</span> @nola.nishio
+            </a>
+            <span class="link-row">
+              <span class="platform-tag">DC</span> @nola.nish
+            </span>
+          </div>
+        </div>
+        <div class="coord-card reveal">
+          <div class="name">Kane Yokoyama</div>
+          <div class="links">
+            <a class="link-row" href="https://instagram.com/kane_yokoyama" target="_blank">
+              <span class="platform-tag">IG</span> @kane_yokoyama
+            </a>
+            <span class="link-row">
+              <span class="platform-tag">DC</span> @kanemyokoyama
+            </span>
+          </div>
+        </div>
+        <div class="coord-card reveal">
+          <div class="name">Opal Chan</div>
+          <div class="links">
+            <a class="link-row" href="https://instagram.com/took_yourglasses" target="_blank">
+              <span class="platform-tag">IG</span> @took_yourglasses
+            </a>
+            <span class="link-row">
+              <span class="platform-tag">DC</span> @bobo_bbg
+            </span>
+          </div>
+        </div>
+        <div class="coord-card reveal">
+          <div class="name">Toshiyuki Joehren</div>
+          <div class="links">
+            <a class="link-row" href="https://instagram.com/tushiyuki" target="_blank">
+              <span class="platform-tag">IG</span> @tushiyuki
+            </a>
+            <span class="link-row">
+              <span class="platform-tag">DC</span> @gladatouille
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">matsuri 祭</div>
+    <p>UC San Diego's Japanese Cultural Festival — Volunteer Portal</p>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => observer.observe(el));
+
+    const heroBg = document.querySelector('.hero-bg img');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y < window.innerHeight) {
+        heroBg.style.transform = `scale(1.1) translateY(${y * 0.15}px)`;
+      }
+    });
+  </script>
+</body>
+
 </html>
