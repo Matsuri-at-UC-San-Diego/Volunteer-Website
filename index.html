@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --olive:     #5B5512;
+        --peach:     #FEE1A7;
+        --fawn:      #D8B577;
+        --pink:      #CE84AD;
+        --red:       #8D0100;
+        --graphite:  #363636;
+        --white:     #FFFFFF;
+      }
+
+      body {
+        font-family: 'Lexend', sans-serif;
+        background-color: var(--peach);
+        background-image:
+          radial-gradient(ellipse at 10% 0%, rgba(206,132,173,0.18) 0%, transparent 55%),
+          radial-gradient(ellipse at 90% 100%, rgba(91,85,18,0.13) 0%, transparent 55%);
+        min-height: 100vh;
+        color: var(--graphite);
+        padding: 32px 16px 56px;
+      }
+
+      /* ─── decorative top bar ─── */
+      .topbar {
+        width: 100%;
+        max-width: 720px;
+        margin: 0 auto 28px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .topbar-line { flex: 1; height: 2px; background: var(--olive); opacity: .35; }
+      .topbar-icon {
+        font-size: 22px;
+        letter-spacing: 4px;
+        color: var(--olive);
+        font-family: 'Noto Serif JP', serif;
+        font-weight: 300;
+      }
+
+      /* ─── card ─── */
+      .card {
+        max-width: 720px;
+        margin: 0 auto;
+        background: var(--white);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 8px 40px rgba(91,85,18,0.13), 0 2px 8px rgba(0,0,0,0.06);
+      }
+
+      /* header banner */
+      .card-header {
+        background: linear-gradient(135deg, var(--olive) 0%, #7a7218 100%);
+        padding: 32px 36px 28px;
+        position: relative;
+        overflow: hidden;
+      }
+      .card-header::after {
+        content: '祭';
+        position: absolute;
+        right: 24px; top: 50%; transform: translateY(-50%);
+        font-family: 'Noto Serif JP', serif;
+        font-size: 96px;
+        color: rgba(255,255,255,0.07);
+        line-height: 1;
+        pointer-events: none;
+        user-select: none;
+      }
+      .card-header h1 {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--white);
+        line-height: 1.35;
+        max-width: 420px;
+      }
+      .card-header .subtitle {
+        margin-top: 6px;
+        font-size: 13px;
+        font-weight: 300;
+        color: rgba(255,255,255,0.7);
+        letter-spacing: .03em;
+      }
+
+      /* accent strip */
+      .accent-strip {
+        height: 5px;
+        background: linear-gradient(90deg, var(--red), var(--pink), var(--fawn));
+      }
+
+      /* body */
+      .card-body { padding: 28px 32px 32px; }
+
+      /* steps */
+      .steps-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        color: var(--olive);
+        margin-bottom: 14px;
+      }
+
+      .steps { display: flex; flex-direction: column; gap: 14px; }
+
+      .step {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        background: #faf7f0;
+        border: 1.5px solid var(--fawn);
+        border-radius: 14px;
+        padding: 16px 18px;
+        transition: border-color .2s, box-shadow .2s;
+      }
+      .step:hover { border-color: var(--olive); box-shadow: 0 4px 16px rgba(91,85,18,0.1); }
+
+      .step-num {
+        flex-shrink: 0;
+        width: 32px; height: 32px;
+        border-radius: 50%;
+        background: var(--olive);
+        color: var(--white);
+        font-size: 14px;
+        font-weight: 700;
+        display: flex; align-items: center; justify-content: center;
+      }
+
+      .step-content { flex: 1; }
+      .step-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+      .step-desc { font-size: 13px; font-weight: 300; color: #555; line-height: 1.55; }
+      .step-desc strong { font-weight: 600; color: var(--graphite); }
+
+      /* buttons */
+      .btnrow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      a.btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 13px 22px;
+        border-radius: 12px;
+        font-family: 'Lexend', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: transform .15s, box-shadow .15s, opacity .15s;
+        cursor: pointer;
+      }
+      a.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.14); }
+      a.btn:active { transform: translateY(0); }
+
+      a.btn.primary {
+        background: linear-gradient(135deg, var(--olive), #7a7218);
+        color: var(--white);
+        box-shadow: 0 3px 12px rgba(91,85,18,0.3);
+      }
+      a.btn.secondary {
+        background: var(--white);
+        color: var(--olive);
+        border: 2px solid var(--olive);
+      }
+
+      .btn-icon { font-size: 16px; }
+
+      /* divider */
+      .divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--fawn), transparent);
+        margin: 28px 0;
+      }
+
+      /* help section */
+      .help-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        color: var(--olive);
+        margin-bottom: 14px;
+      }
+
+      .coordinator-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      .coordinator-card {
+        background: #faf7f0;
+        border: 1.5px solid var(--fawn);
+        border-radius: 12px;
+        padding: 13px 16px;
+        transition: border-color .2s;
+      }
+      .coordinator-card:hover { border-color: var(--pink); }
+
+      .coord-name { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+      .coord-links { display: flex; flex-direction: column; gap: 3px; }
+      .coord-link {
+        font-size: 12px;
+        font-weight: 300;
+        color: #555;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: color .15s;
+      }
+      .coord-link:hover { color: var(--olive); }
+      .coord-link .platform {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: var(--pink);
+        min-width: 50px;
+      }
+
+      /* social row */
+      .social-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 4px;
+      }
+      a.social-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        border: 1.5px solid var(--fawn);
+        color: var(--olive);
+        background: var(--white);
+        transition: background .2s, color .2s, border-color .2s;
+      }
+      a.social-pill:hover { background: var(--olive); color: var(--white); border-color: var(--olive); }
+
+      /* footer note */
+      .footer-note {
+        font-size: 11px;
+        font-weight: 300;
+        color: #999;
+        text-align: center;
+        margin-top: 22px;
+        max-width: 720px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 520px) {
+        .card-header { padding: 24px 22px 20px; }
+        .card-body { padding: 22px 20px 26px; }
+        .card-header h1 { font-size: 18px; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="topbar">
+      <div class="topbar-line"></div>
+      <div class="topbar-icon">祭</div>
+      <div class="topbar-line"></div>
+    </div>
+
+    <div class="card">
+      <!-- Header -->
+      <div class="card-header">
+        <h1>Thank you for volunteering at Matsuri!</h1>
+        <div class="subtitle">Please read the instructions below before signing up for any shifts.</div>
+      </div>
+      <div class="accent-strip"></div>
+
+      <!-- Body -->
+      <div class="card-body">
+
+        <div class="steps-label">How to sign up</div>
+        <div class="steps">
+
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-title">Fill out the Sign-Up Form &amp; Waiver</div>
+              <div class="step-desc">
+                Complete this <strong>once</strong> before selecting any shifts. This registers you and adds your name to the volunteer list.
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-title">Select your shifts in the spreadsheet</div>
+              <div class="step-desc">
+                Enter your name in the time slots you want. Your name should appear in the dropdown after completing the form.<br>
+                <strong>Please do not move or edit other people's names.</strong>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="btnrow">
+          <a class="btn primary" href="<?= CONFIG.FORM_URL ?>" target="_blank">
+            <span class="btn-icon">📋</span> 1) Open Form &amp; Waiver
+          </a>
+          <a class="btn secondary" href="<?= CONFIG.SHEET_URL ?>" target="_blank">
+            <span class="btn-icon">📅</span> 2) Open Sign-Up Sheet
+          </a>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="help-label">Need help? Contact a coordinator</div>
+
+        <div class="coordinator-grid">
+
+          <div class="coordinator-card">
+            <div class="coord-name">Nola Nishio</div>
+            <div class="coord-links">
+              <a class="coord-link" href="https://instagram.com/nola.nishio" target="_blank">
+                <span class="platform">Instagram</span> @nola.nishio
+              </a>
+              <span class="coord-link">
+                <span class="platform">Discord</span> @nola.nish
+              </span>
+            </div>
+          </div>
+
+          <div class="coordinator-card">
+            <div class="coord-name">Kane Yokoyama</div>
+            <div class="coord-links">
+              <a class="coord-link" href="https://instagram.com/kane_yokoyama" target="_blank">
+                <span class="platform">Instagram</span> @kane_yokoyama
+              </a>
+              <span class="coord-link">
+                <span class="platform">Discord</span> @kanemyokoyama
+              </span>
+            </div>
+          </div>
+
+          <div class="coordinator-card">
+            <div class="coord-name">Opal Chan</div>
+            <div class="coord-links">
+              <a class="coord-link" href="https://instagram.com/took_yourglasses" target="_blank">
+                <span class="platform">Instagram</span> @took_yourglasses
+              </a>
+              <span class="coord-link">
+                <span class="platform">Discord</span> @bobo_bbg
+              </span>
+            </div>
+          </div>
+
+          <div class="coordinator-card">
+            <div class="coord-name">Toshiyuki Joehren</div>
+            <div class="coord-links">
+              <a class="coord-link" href="https://instagram.com/tushiyuki" target="_blank">
+                <span class="platform">Instagram</span> @tushiyuki
+              </a>
+              <span class="coord-link">
+                <span class="platform">Discord</span> @gladatouille
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="social-row">
+          <a class="social-pill" href="https://instagram.com/sdmatsuri" target="_blank">
+            📸 @sdmatsuri
+          </a>
+          <a class="social-pill" href="mailto:food@sdmatsuri.org">
+            ✉️ food@sdmatsuri.org
+          </a>
+        </div>
+
+      </div><!-- /card-body -->
+    </div><!-- /card -->
+
+    <div class="footer-note">
+      This page is the mobile-friendly volunteer portal for Matsuri at UC San Diego.<br>
+      It is intentionally separate from the spreadsheet so it works consistently in the Sheets mobile app.
+    </div>
+
+  </body>
+</html>
